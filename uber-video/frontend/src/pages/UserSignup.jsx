@@ -20,9 +20,9 @@ const UserSignup = () => {
 
 
 
-
   const submitHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    console.log(import.meta.env.VITE_BASE_URL); // Ensure the correct base URL is logged
     const newUser = {
       fullname: {
         firstname: firstName,
@@ -30,24 +30,31 @@ const UserSignup = () => {
       },
       email: email,
       password: password
+    };
+    console.log(newUser); // Verify the newUser object is properly structured
+  
+    try {
+      const response = await axios.post(`http://localhost:5000/users/register`, newUser);
+  
+      if (response.status === 201) {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      }
+  
+      // Reset input fields
+      setEmail('');
+      setFirstName('');
+      setLastName('');
+      setPassword('');
+    } catch (error) {
+      // Log detailed error
+      console.error("Error:", error.response?.data || error.message);
+      alert(error.response?.data?.error || "Something went wrong!");
     }
-
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
-
-    if (response.status === 201) {
-      const data = response.data
-      setUser(data.user)
-      localStorage.setItem('token', data.token)
-      navigate('/home')
-    }
-
-
-    setEmail('')
-    setFirstName('')
-    setLastName('')
-    setPassword('')
-
-  }
+  };
+  
   return (
     <div>
       <div className='p-7 h-screen flex flex-col justify-between'>
