@@ -9,8 +9,12 @@ const userRoutes = require('./routes/user.routes');
 const captainRoutes = require('./routes/captain.routes');
 const mapsRoutes = require('./routes/maps.routes');
 const rideRoutes = require('./routes/ride.routes');
+const mongoose = require('mongoose');
+
 
 connectToDb();
+
+mongoose.set('debug', true);
 
 app.use(cors());
 app.use(express.json());

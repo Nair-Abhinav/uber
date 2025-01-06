@@ -7,7 +7,8 @@ module.exports.createCaptain = async ({
     if (!firstname || !email || !password || !color || !plate || !capacity || !vehicleType) {
         throw new Error('All fields are required');
     }
-    const captain = captainModel.create({
+    console.log("Creating captain with:", { firstname, lastname, email  , color, plate, capacity, vehicleType});
+    const captain =await  new captainModel({
         fullname: {
             firstname,
             lastname
@@ -21,6 +22,7 @@ module.exports.createCaptain = async ({
             vehicleType
         }
     })
-
+    const savedCaptain = await captain.save();
+    console.log("Captain created:", savedCaptain);
     return captain;
 }
